@@ -12,7 +12,7 @@ cd ME_BE
 
 # Create virtual environment
 python -m venv mxp
-source mxp/bin/activate  # (Windows: venv\Scripts\activate)
+source mxp/bin/activate  # (Windows: mxp\Scripts\activate)
 
 # Install dependencies
 pip install -r requirements.txt

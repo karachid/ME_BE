@@ -4,12 +4,12 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return jsonify({"message": "Welcome to MenuXpert API 🚀"})
+    return jsonify({"message": "Welcome to MenuXpert API"})
 
 @app.route("/menu")
 def get_menu():
     menu = {
-        "restaurant": "Café du Soleil",
+        "restaurant": "Gacia dessert room ",
         "categories": [
             {
                 "name": "Starters",
