@@ -1,4 +1,6 @@
 __pycache__/
+instance/
 *.pyc
 mxp/
 .env
+filldb.py

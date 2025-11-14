@@ -1,42 +1,31 @@
-from flask import Flask, jsonify
+from flask import Flask
 from flask_cors import CORS
+from models.db import db
+from routes.menu_routes import menu_routes
+from routes.item_routes import item_routes
+from routes.health_routes import health_routes
+from models import Restaurant, Category, Subcategory, Item
+import config
 
-app = Flask(__name__)
-CORS(app)
+def create_app():
+    app = Flask(__name__)
+    CORS(app)
 
-@app.route("/")
-def home():
-    return jsonify({"message": "Welcome to MenuXpert API"})
+    app.config["SQLALCHEMY_DATABASE_URI"] = config.DB_URL
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-@app.route("/menu")
-def get_menu():
-    menu = {
-        "restaurant": "Gacia dessert room ",
-        "categories": [
-            {
-                "name": "Starters",
-                "items": [
-                    {"name": "Bruschetta", "price": 5.5, "description": "Grilled bread with tomato & basil"},
-                    {"name": "Soup of the Day", "price": 4.0, "description": "Freshly prepared daily soup"}
-                ]
-            },
-            {
-                "name": "Main Dishes",
-                "items": [
-                    {"name": "Spaghetti Carbonara", "price": 11.0, "description": "Classic Italian pasta"},
-                    {"name": "Grilled Chicken", "price": 13.5, "description": "Served with fries and salad"}
-                ]
-            },
-            {
-                "name": "Desserts",
-                "items": [
-                    {"name": "Tiramisu", "price": 6.0, "description": "Homemade Italian dessert"},
-                    {"name": "Ice Cream Trio", "price": 5.0, "description": "Three scoops of your choice"}
-                ]
-            }
-        ]
-    }
-    return jsonify(menu)
+    db.init_app(app)
+
+    app.register_blueprint(health_routes, url_prefix="/")
+    app.register_blueprint(menu_routes, url_prefix="/api")
+    app.register_blueprint(item_routes, url_prefix="/api")
+
+    return app
+
+app = create_app()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    with app.app_context():
+        db.create_all()  # auto create tables for test mode
+    app.run(host="0.0.0.0", port=5000, debug=True)
+
