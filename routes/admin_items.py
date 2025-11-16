@@ -5,7 +5,7 @@ from models.item import Item
 admin_items = Blueprint("admin_items", __name__)
 
 # CREATE ITEM
-@admin_items.post("/")
+@admin_items.post("/add")
 def add_item():
     data = request.json
 
@@ -54,19 +54,45 @@ def get_items(subcategory_id):
     return jsonify([i.to_dict() for i in items])
 
 # UPDATE ITEM
-@admin_items.put("/<item_id>")
+@admin_items.patch("/update/<item_id>")
 def update_item(item_id):
-    item = Item.query.get_or_404(item_id)
-    data = request.json
+    item = Item.query.get(item_id)
+    if not item:
+        return jsonify({"error": "Item not found"}), 404
 
-    item.name = data.get("name", item.name)
-    item.description = data.get("description", item.description)
-    item.price = data.get("price", item.price)
-    item.is_available = data.get("is_available", item.is_available)
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid or missing JSON body"}), 400
+
+    # Update only provided fields
+    if "name" in data:
+        item.name = data["name"]
+
+    if "description" in data:
+        item.description = data["description"]
+
+    if "price" in data:
+        item.price = data["price"]
+
+    if "is_available" in data:
+        item.is_available = data["is_available"]
+
+    if "subcategory_id" in data:
+        item.subcategory_id = data["subcategory_id"]
 
     db.session.commit()
 
-    return jsonify({"message": "Item updated", "item": item.to_dict()})
+    return jsonify({
+        "message": "Item updated successfully",
+        "item": {
+            "id": item.id,
+            "name": item.name,
+            "description": item.description,
+            "price": item.price,
+            "is_available": item.is_available,
+            "subcategory_id": item.subcategory_id
+        }
+    }), 200
 
 # DELETE ITEM
 @admin_items.delete("/<item_id>")
