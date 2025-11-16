@@ -95,7 +95,7 @@ def update_item(item_id):
     }), 200
 
 # DELETE ITEM
-@admin_items.delete("/<item_id>")
+@admin_items.delete("/delete/<item_id>")
 def delete_item(item_id):
     item = Item.query.get_or_404(item_id)
     db.session.delete(item)

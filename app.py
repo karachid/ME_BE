@@ -6,6 +6,7 @@ from routes.item_routes import item_routes
 from routes.health_routes import health_routes
 from routes.filldb_routes import filldb_routes
 from routes.admin_items import admin_items
+from routes.admin_categories import admin_categories
 from models import Restaurant, Category, Subcategory, Item
 import config
 
@@ -23,6 +24,7 @@ def create_app():
     app.register_blueprint(menu_routes, url_prefix="/api")
     app.register_blueprint(item_routes, url_prefix="/api")
     app.register_blueprint(admin_items, url_prefix="/admin/items")
+    app.register_blueprint(admin_items, url_prefix="/admin/categories")
 
     return app
 
