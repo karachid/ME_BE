@@ -24,7 +24,7 @@ def create_app():
     app.register_blueprint(menu_routes, url_prefix="/api")
     app.register_blueprint(item_routes, url_prefix="/api")
     app.register_blueprint(admin_items, url_prefix="/admin/items")
-    app.register_blueprint(admin_items, url_prefix="/admin/categories")
+    app.register_blueprint(admin_categories, url_prefix="/admin/categories")
 
     return app
 
