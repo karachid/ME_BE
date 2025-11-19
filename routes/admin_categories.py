@@ -59,16 +59,38 @@ def update_category(category_id):
 
     category = Category.query.get_or_404(category_id)
 
-    # Update only the fields provided
     if "name" in data:
         category.name = data["name"]
+
+
+    new_subcats = data.get("add_subcategories", [])
+    if isinstance(new_subcats, list):
+        for sub_name in new_subcats:
+            sub = Subcategory(name=sub_name, category_id=category.id)
+            db.session.add(sub)
+
+
+    delete_subcats = data.get("delete_subcategories", [])
+    if isinstance(delete_subcats, list):
+        for sub_id in delete_subcats:
+            sub = Subcategory.query.filter_by(id=sub_id, category_id=category.id).first()
+            if sub:
+                db.session.delete(sub)
 
     db.session.commit()
 
     return jsonify({
         "message": "Category updated",
-        "category": category.to_dict()
+        "category": {
+            "id": category.id,
+            "name": category.name,
+            "restaurant_id": category.restaurant_id,
+            "subcategories": [
+                {"id": s.id, "name": s.name} for s in category.subcategories
+            ]
+        }
     }), 200
+
 
 
 # DELETE CATEGORY
