@@ -8,7 +8,7 @@ class Category(db.Model):
 
     restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.id"), nullable=False)
 
-    subcategories = db.relationship("Subcategory", backref="category", lazy=True)
+    subcategories = db.relationship("Subcategory", backref="category", lazy=True, cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
