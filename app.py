@@ -8,10 +8,15 @@ from routes.filldb_routes import filldb_routes
 from routes.admin_items import admin_items
 from routes.admin_categories import admin_categories
 from models import Restaurant, Category, Subcategory, Item
+from utils.logger import setup_logger
 import config
 
+
 def create_app():
+    logger = setup_logger()
     app = Flask(__name__)
+    logger.info("MenuXpert backend starting ...")
+
     CORS(app)
 
     app.config["SQLALCHEMY_DATABASE_URI"] = config.DB_URL
