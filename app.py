@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, request
+import time
 from flask_cors import CORS
 from models.db import db
 from routes.menu_routes import menu_routes
@@ -16,6 +17,19 @@ def create_app():
     logger = setup_logger()
     app = Flask(__name__)
     logger.info("MenuXpert backend starting ...")
+
+    @app.before_request
+    def log_request_start():
+        request.start_time = time.time()
+        logger.info(f"➡️ {request.method} {request.path} from {request.remote_addr}")
+
+    @app.after_request
+    def log_request_end(response):
+        duration = time.time() - request.start_time
+        logger.info(
+            f"⬅️ {request.method} {request.path} → {response.status_code} ({duration:.2f}s)"
+        )
+        return response
 
     CORS(app)
 

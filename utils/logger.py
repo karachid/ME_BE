@@ -2,9 +2,17 @@ import logging
 import sys
 
 def setup_logger():
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(message)s",
-        handlers=[logging.StreamHandler(sys.stdout)]
+    logger = logging.getLogger("MenuXpert")
+    logger.setLevel(logging.INFO)
+
+    handler = logging.StreamHandler(sys.stdout)
+    formatter = logging.Formatter(
+        "%(asctime)s — [%(levelname)s] — %(message)s"
     )
-    return logging.getLogger("MenuXpert")
+    handler.setFormatter(formatter)
+
+    # Prevent adding multiple handlers when re-importing
+    if not logger.handlers:
+        logger.addHandler(handler)
+
+    return logger
