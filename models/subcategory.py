@@ -1,5 +1,6 @@
 from .db import db
 
+
 class Subcategory(db.Model):
     __tablename__ = "subcategories"
 

@@ -1,5 +1,6 @@
 from .db import db
 
+
 class Item(db.Model):
     __tablename__ = "items"
 
@@ -9,7 +10,9 @@ class Item(db.Model):
     price = db.Column(db.Float)
     is_available = db.Column(db.Boolean, default=True, nullable=False)
 
-    subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategories.id"), nullable=False)
+    subcategory_id = db.Column(
+        db.Integer, db.ForeignKey("subcategories.id"), nullable=False
+    )
 
     def to_dict(self):
         sub = self.subcategory
