@@ -1,6 +1,7 @@
-from utils.logger import setup_logger
+import logging
 
-logger = setup_logger()
+logger = logging.getLogger("MenuXpert")
+
 
 def log_admin_action(action_type, object_type, object_id=None, details=None):
     msg = f"ADMIN ACTION — {action_type.upper()} {object_type}"
