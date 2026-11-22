@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Cairo", ui-sans-serif, system-ui, "Segoe UI", Tahoma, sans-serif;
+
+  /* Brand: deep zellige teal */
+  --color-brand-50: #eefaf6;
+  --color-brand-100: #d5f2e8;
+  --color-brand-200: #aee4d3;
+  --color-brand-300: #7acfb8;
+  --color-brand-400: #46b399;
+  --color-brand-500: #25957c;
+  --color-brand-600: #187764;
+  --color-brand-700: #145f51;
+  --color-brand-800: #124c42;
+  --color-brand-900: #0e3a33;
+
+  /* Accent: saffron (promotions) */
+  --color-saffron-50: #fff8eb;
+  --color-saffron-100: #ffeccc;
+  --color-saffron-200: #fed89a;
+  --color-saffron-400: #f6a73c;
+  --color-saffron-500: #ee8d17;
+  --color-saffron-600: #d6700e;
+  --color-saffron-700: #a8530f;
+
+  /* Warm neutrals */
+  --color-cream: #faf6ef;
+  --color-ink: #1f1a17;
+  --color-ink-soft: #6b625b;
+  --color-line: #e8e0d4;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+}
+
+/* Touch-first: every interactive control is at least 44px. */
+button,
+select,
+input:not([type="checkbox"]) {
+  min-height: 44px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-saffron-400);
+  outline-offset: 2px;
+}
+
+/* Subtle geometric star tile (zellige-inspired) used on brand surfaces. */
+.pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='white' stroke-opacity='.10' stroke-width='1.2'%3E%3Cpath d='M32 6l7.4 12.6L53.7 17l-1.6 14.4L64 32l-11.9.6 1.6 14.4-14.3-1.6L32 58l-7.4-12.6L10.3 47l1.6-14.4L0 32l11.9-.6L10.3 17l14.3 1.6z'/%3E%3Ccircle cx='32' cy='32' r='6'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 64px 64px;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 font-semibold transition select-none active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 font-semibold transition select-none active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 bg-brand-600 text-white shadow-sm hover:bg-brand-700;
+  }
+  .btn-soft {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 font-semibold transition select-none active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 border border-line bg-white text-ink hover:bg-stone-50;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 font-semibold transition select-none active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 bg-red-50 text-red-700 hover:bg-red-100;
+  }
+  .field {
+    @apply w-full rounded-xl border border-stone-300 bg-white px-3.5 text-base text-ink transition;
+    @apply placeholder:text-stone-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-100 focus:outline-none;
+  }
+  .card {
+    @apply rounded-2xl border border-line/70 bg-white;
+    box-shadow:
+      0 1px 2px rgb(60 40 20 / 0.04),
+      0 6px 20px -8px rgb(60 40 20 / 0.10);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.28s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise {
+    animation: none;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+  }
+}
