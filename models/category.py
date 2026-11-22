@@ -20,7 +20,9 @@ class Category(db.Model):
             "id": self.id,
             "name": self.name,
             "restaurant_id": self.restaurant_id,
+            "item_count": sum(len(sc.items) for sc in self.subcategories),
             "subcategories": [
-                {"id": sc.id, "name": sc.name} for sc in self.subcategories
+                {"id": sc.id, "name": sc.name, "item_count": len(sc.items)}
+                for sc in self.subcategories
             ],
         }

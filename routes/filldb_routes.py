@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, current_app, jsonify
 from models.db import db
 from models.restaurant import Restaurant
 from models.category import Category
@@ -449,6 +449,10 @@ items_data = [
 
 @filldb_routes.route("/filldb", methods=["POST"])
 def fill_db():
+    # Destructive (drops every table): disabled unless ALLOW_FILLDB=1.
+    if not current_app.config.get("ALLOW_FILLDB"):
+        return jsonify({"error": "Not found"}), 404
+
     # Reset database
     db.drop_all()
     db.create_all()
